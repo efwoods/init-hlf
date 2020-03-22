@@ -16,13 +16,14 @@ verify-installed-prerequisites(){
         sudo apt install curl
     fi
 
+        echo "Docker:"
+    if [ -z $DOCKER ]; then
+        echo "install Docker"
+        snap install docker
+    fi
+
     echo "Java:"
     if [ -z $JAVA ]; then
         echo "install java"
-    fi
-
-    echo "Docker:"
-    if [ -z $DOCKER ]; then
-        echo "install Docker"
     fi
 }
