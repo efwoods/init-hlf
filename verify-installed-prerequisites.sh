@@ -5,6 +5,7 @@ verify-installed-prerequisites(){
     CURL=$(which curl)
     JAVA=$(which java)
     DOCKER=$(which docker)
+    MVN=$(which mvn)
 
     echo ""
     echo "Git:"
@@ -30,7 +31,11 @@ verify-installed-prerequisites(){
     if [ -z $DOCKER ]; then
         echo "install Docker"
         snap install docker
-        export PATH="$PATH:/snap/bin"
+        echo "PATH=$PATH:/snap/bin">temp
+        tail -n +2 /etc/environment | tee -a temp
+        sudo mv temp /etc/environment
+        source /etc/environment
+
     else
         echo "Docker is installed @: $DOCKER"
         docker --version
@@ -42,12 +47,25 @@ verify-installed-prerequisites(){
     if [ -z $JAVA ]; then
         echo "install java"
         sudo apt install openjdk-11-jdk
-        echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/bin/"' | sudo tee -a /etc/environment
+        echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"' | sudo tee -a /etc/environment
+        echo "PATH=$PATH:$JAVA_HOME/bin">temp
+        tail -n +2 /etc/environment | tee -a temp
+        sudo mv temp /etc/environment
         source /etc/environment
         echo $JAVA_HOME
     else
         echo "Java is installed @: $JAVA"
         java -version
 
+    fi
+
+    echo ""
+    echo "Maven:"
+    if [ -z $MVN ]; then
+        echo "install maven"
+        sudo apt install maven
+    else
+        echo "Maven is installed @: $MVN"
+        mvn -version
     fi
 }

@@ -12,15 +12,7 @@ sudo curl -sSL https://bit.ly/2ysbOFE | sudo bash -s
 
 # You may want to add that to your PATH environment variable so that these can be picked up without fully qualifying the path to each binary. e.g.:
 
-export PATH=<path to download location>/bin:$PATH
-
-# Binaries:
-    # configtxgen,
-    # configtxlator,
-    # cryptogen,
-    # discover,
-    # idemixgen
-    # orderer,
-    # peer,
-    # fabric-ca-client
-
+echo "PATH=~/init-hlf/fabric-samples/bin:$PATH">temp
+tail -n +2 /etc/environment | tee -a temp
+sudo mv temp /etc/environment
+source /etc/environment
